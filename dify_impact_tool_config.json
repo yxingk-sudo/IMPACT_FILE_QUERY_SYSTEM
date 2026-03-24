@@ -1,0 +1,177 @@
+{
+  "tool_name": "impact_file_query",
+  "version": "1.0.0",
+  "description": "查询 Impact 目录下的文件内容，无需上传知识库即可实时访问",
+  "author": "System Admin",
+  "icon": "📁",
+  "credentials": {
+    "api_url": {
+      "type": "string",
+      "label": "API URL",
+      "default": "http://localhost:8899",
+      "description": "Impact 文件查询 API 地址"
+    }
+  },
+  "tools": [
+    {
+      "name": "search_files",
+      "label": "搜索文件",
+      "description": "在 Impact 目录中搜索包含关键词的文件",
+      "parameters": {
+        "query": {
+          "type": "string",
+          "label": "搜索关键词",
+          "description": "要搜索的关键词或短语",
+          "required": true
+        },
+        "limit": {
+          "type": "number",
+          "label": "返回数量",
+          "description": "最多返回的文件数量",
+          "default": 5,
+          "min": 1,
+          "max": 20
+        }
+      },
+      "http_config": {
+        "method": "POST",
+        "url": "{{api_url}}/api/search",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "query": "{{query}}",
+          "limit": "{{limit}}"
+        }
+      }
+    },
+    {
+      "name": "get_file_content",
+      "label": "获取文件内容",
+      "description": "读取指定文件的完整内容",
+      "parameters": {
+        "file_name": {
+          "type": "string",
+          "label": "文件名",
+          "description": "文件名（如 dify_verification_test.txt）",
+          "required": true
+        }
+      },
+      "http_config": {
+        "method": "GET",
+        "url": "{{api_url}}/api/file/{{file_name}}"
+      }
+    },
+    {
+      "name": "list_all_files",
+      "label": "列出所有文件",
+      "description": "列出 Impact 目录中所有已索引的文件",
+      "parameters": {
+        "file_type": {
+          "type": "string",
+          "label": "文件类型",
+          "description": "筛选文件类型（如 .txt, .pdf），留空表示全部",
+          "required": false
+        },
+        "limit": {
+          "type": "number",
+          "label": "返回数量",
+          "description": "最多返回的文件数量",
+          "default": 20,
+          "min": 1,
+          "max": 100
+        }
+      },
+      "http_config": {
+        "method": "GET",
+        "url": "{{api_url}}/api/files?file_type={{file_type}}&limit={{limit}}"
+      }
+    },
+    {
+      "name": "smart_query",
+      "label": "智能查询",
+      "description": "根据问题智能匹配相关文件并返回内容上下文",
+      "parameters": {
+        "question": {
+          "type": "string",
+          "label": "用户问题",
+          "description": "用户提出的问题",
+          "required": true
+        },
+        "max_results": {
+          "type": "number",
+          "label": "最大匹配文件数",
+          "description": "最多匹配的文件数量",
+          "default": 3,
+          "min": 1,
+          "max": 10
+        }
+      },
+      "http_config": {
+        "method": "POST",
+        "url": "{{api_url}}/api/query",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "question": "{{question}}",
+          "max_results": "{{max_results}}"
+        }
+      }
+    },
+    {
+      "name": "get_stats",
+      "label": "获取统计信息",
+      "description": "获取文件库的统计信息",
+      "parameters": {},
+      "http_config": {
+        "method": "GET",
+        "url": "{{api_url}}/api/stats"
+      }
+    },
+    {
+      "name": "get_recent_queries",
+      "label": "获取最近查询记录",
+      "description": "获取用户最近的查询记录（短期记忆）",
+      "parameters": {
+        "limit": {
+          "type": "number",
+          "label": "返回数量",
+          "description": "最多返回的查询记录数量",
+          "default": 10,
+          "min": 1,
+          "max": 50
+        }
+      },
+      "http_config": {
+        "method": "GET",
+        "url": "{{api_url}}/api/memory/recent?limit={{limit}}"
+      }
+    },
+    {
+      "name": "search_history_queries",
+      "label": "搜索历史查询记录",
+      "description": "搜索用户的历史查询记录（长期记忆）",
+      "parameters": {
+        "keyword": {
+          "type": "string",
+          "label": "搜索关键词",
+          "description": "要搜索的关键词",
+          "required": false
+        },
+        "limit": {
+          "type": "number",
+          "label": "返回数量",
+          "description": "最多返回的查询记录数量",
+          "default": 10,
+          "min": 1,
+          "max": 50
+        }
+      },
+      "http_config": {
+        "method": "GET",
+        "url": "{{api_url}}/api/memory/history?keyword={{keyword}}&limit={{limit}}"
+      }
+    }
+  ]
+}

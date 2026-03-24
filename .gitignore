@@ -1,0 +1,15 @@
+.idea
+composer.lock
+*.log
+thinkphp
+__pycache__/
+*.pyc
+*.db
+*.sqlite
+.env
+.htaccess
+.runtime/
+vendor/
+node_modules/
+.DS_Store
+Thumbs.db
