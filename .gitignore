@@ -1,15 +1,40 @@
-.idea
-composer.lock
-*.log
-thinkphp
+# Python
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Databases
 *.db
 *.sqlite
+*.sqlite3
+
+# Logs
+*.log
+logs/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.qoder/
+
+# Environment
 .env
-.htaccess
-.runtime/
-vendor/
-node_modules/
+.env.*
+
+# OS
 .DS_Store
 Thumbs.db
+
+# Other
+*.tmp
+*.bak
+.cache/
